@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> {
     private ArrayList<Motivation> motivations = new ArrayList<>();
 
-//    public Adapter(ArrayList<Motivation> motivations) {
-//        this.motivations = motivations;
-//    }
+
 
     public ArrayList<Motivation> getMotivations() {
         return motivations;

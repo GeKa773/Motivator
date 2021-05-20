@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Date date;
     private SimpleDateFormat format;
 
-    private String dateFormat = "dd:MM:yyyy";
+    private String dateFormat;
 
     private TextView textView;
     private Button buttonBefore, buttonNext;
@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Elements all;
 
+    private MenuItem menuItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
+
         threadStart();
+
     }
 
     private void init() {
         motivations = new ArrayList<>();
+
+        dateFormat = "dd:MM:yyyy";
 
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new Adapter();
@@ -84,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         boolActivity = false;
+
+        menuItem = findViewById(R.id.menuItem);
+
+
+
     }
 
     private void threadStart() {
@@ -113,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     adapter.setMotivations(motivations);
+
                 }
             });
 
@@ -127,13 +139,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getTodayMotivation(MenuItem item) {
-        checkBool();
-        checkSharedFirst();
-        checkSharedDayToday();
-        Log.d("SSS", "Shared Date: " + sharedPreferences.getString(getString(R.string.shared_day), getString(R.string.shared_first_day)));
-        Log.d("SSS", "SharedID: " + sharedPreferences.getInt(getString(R.string.shared_id), -1));
+        try {
+            checkBool();
+            checkSharedFirst();
+            checkSharedDayToday();
+            Log.d("SSS", "Shared Date: " + sharedPreferences.getString(getString(R.string.shared_day), getString(R.string.shared_first_day)));
+            Log.d("SSS", "SharedID: " + sharedPreferences.getInt(getString(R.string.shared_id), -1));
 
-        setTextView();
+            setTextView();
+        }catch (Exception e){
+            Toast.makeText(this, "Подождите", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void checkBool() {
@@ -197,6 +214,34 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Не получилось загрузить", Toast.LENGTH_SHORT).show();
             return;
         }
-        textView.setText(all.get(i).text());
+        textView.setText(i + 1 + ": " + all.get(i).text());
+    }
+
+    public void goBefore(View view) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
+        --id;
+        if (id < 0) {
+            editor.putInt(getString(R.string.shared_id), (all.size() - 1));
+        } else {
+            editor.putInt(getString(R.string.shared_id), id);
+        }
+        editor.apply();
+        setTextView();
+    }
+
+    public void goNext(View view) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
+        ++id;
+        if (id >= all.size()) {
+            editor.putInt(getString(R.string.shared_id), 0);
+        } else {
+            editor.putInt(getString(R.string.shared_id), id);
+        }
+        editor.apply();
+        setTextView();
     }
 }
