@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Motivator</string>
+    <string name="web_site">https://wikiphile.ru/570-fraz-o-motivacii/</string>
+    <string name="shared_name">SHARED</string>
+    <string name="shared_id">ID</string>
+    <string name="shared_day">DAY</string>
+    <string name="shared_first_day">first</string>
+    <string name="shared_first_id">-1</string>
+</resources>
