@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         menuItem = findViewById(R.id.menuItem);
 
 
-
     }
 
     private void threadStart() {
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("SSS", "SharedID: " + sharedPreferences.getInt(getString(R.string.shared_id), -1));
 
             setTextView();
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Подождите", Toast.LENGTH_SHORT).show();
         }
 
@@ -218,30 +217,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goBefore(View view) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
-        --id;
-        if (id < 0) {
-            editor.putInt(getString(R.string.shared_id), (all.size() - 1));
-        } else {
-            editor.putInt(getString(R.string.shared_id), id);
+
+        try {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
+            --id;
+            if (id < 0) {
+                editor.putInt(getString(R.string.shared_id), (all.size() - 1));
+            } else {
+                editor.putInt(getString(R.string.shared_id), id);
+            }
+            editor.apply();
+            setTextView();
+        } catch (Exception e) {
         }
-        editor.apply();
-        setTextView();
+
     }
 
     public void goNext(View view) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
-        ++id;
-        if (id >= all.size()) {
-            editor.putInt(getString(R.string.shared_id), 0);
-        } else {
-            editor.putInt(getString(R.string.shared_id), id);
+        try {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            int id = sharedPreferences.getInt(getString(R.string.shared_id), -1);
+            ++id;
+            if (id >= all.size()) {
+                editor.putInt(getString(R.string.shared_id), 0);
+            } else {
+                editor.putInt(getString(R.string.shared_id), id);
+            }
+            editor.apply();
+            setTextView();
+        } catch (Exception e) {
         }
-        editor.apply();
-        setTextView();
+
     }
 }
